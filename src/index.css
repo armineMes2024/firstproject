@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+body{
+     font-family: "Mulish", sans-serif;
+     background-color: black;
+}
+.block{
+     background-color: aqua;
+     color:black;
+     border-radius: 15px;
+     margin-bottom: 30px;
+     padding: 16px;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+h3 {
+  font-size: 32px;
+}
