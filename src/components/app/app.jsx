@@ -110,33 +110,88 @@ import AppAddNewEmployee from "../app-add-employee/app-add-new-employee";
 ////////////////////////////////////second variant
 
 
+// export default class App extends Component {
+// 	data = [
+// 		{ id: 1, name: 'John Smith', salary: 1000, increase: false },
+// 		{ id: 2, name: 'Alex Shepard', salary: 950, increase: false },
+// 		{ id: 3, name: 'Tom Jackson', salary: 645, increase: false },
+// 		{ id: 4, name: 'Adam Miller', salary: 1245, increase: false },
+// 		{ id: 5, name: 'Mila Yohovich', salary: 877, increase: false },
+// 	]
+
+// 	toggleIncrease = id => {
+// 		const employee = this.data.find(emp => emp.id === id)
+// 		if (employee) {
+// 			employee.increase = !employee.increase
+// 			this.forceUpdate() //is not recomended
+
+// 		}
+// 	}
+
+// 	///////////////// not working
+// 	// toggleIncrease = id => {
+// 	// 	this.data = this.data.map(employee =>
+// 	// 		employee.id === id
+// 	// 			? { ...employee, increase: !employee.increase }
+// 	// 			: employee
+// 	// 	)
+// 	// 	this.render() 
+// 	// }
+
+// 	render() {
+// 		return (
+// 			<div className='app'>
+// 				<AppInfo />
+// 				<div className='search-and-filter block'>
+// 					<h3>Search or Filter</h3>
+// 					<AppSearch />
+// 					<AppFilter />
+// 				</div>
+// 				<AppEmployeeList
+// 					data={this.data}
+// 					onToggleIncrease={this.toggleIncrease}
+// 				/>
+// 				<AppAddNewEmployee />
+// 			</div>
+// 		)
+// 	}
+// }
+//adding newemployee
 export default class App extends Component {
-	data = [
-		{ id: 1, name: 'John Smith', salary: 1000, increase: false },
-		{ id: 2, name: 'Alex Shepard', salary: 950, increase: false },
-		{ id: 3, name: 'Tom Jackson', salary: 645, increase: false },
-		{ id: 4, name: 'Adam Miller', salary: 1245, increase: false },
-		{ id: 5, name: 'Mila Yohovich', salary: 877, increase: false },
-	]
-
-	toggleIncrease = id => {
-		const employee = this.data.find(emp => emp.id === id)
-		if (employee) {
-			employee.increase = !employee.increase
-			this.forceUpdate() //is not recomended
-
+	constructor(props) {
+		super(props)
+		this.state = {
+			data: [
+				{ id: 1, name: 'John Smith', salary: 1000, increase: false },
+				{ id: 2, name: 'Alex Shepard', salary: 950, increase: false },
+				{ id: 3, name: 'Tom Jackson', salary: 645, increase: false },
+				{ id: 4, name: 'Adam Miller', salary: 1245, increase: false },
+				{ id: 5, name: 'Mila Yohovich', salary: 877, increase: false },
+			],
 		}
 	}
 
-	///////////////// not working
-	// toggleIncrease = id => {
-	// 	this.data = this.data.map(employee =>
-	// 		employee.id === id
-	// 			? { ...employee, increase: !employee.increase }
-	// 			: employee
-	// 	)
-	// 	this.render() 
-	// }
+	toggleIncrease = id => {
+		this.setState(({ data }) => ({
+			data: data.map(employee =>
+				employee.id === id
+					? { ...employee, increase: !employee.increase }
+					: employee
+			),
+		}))
+	}
+
+	addNewEmployee = (name, salary) => {
+		this.setState(({ data }) => {
+			const newEmployee = {
+				id: data.length + 1, // Generate new ID
+				name,
+				salary: parseFloat(salary), // Ensure salary is a number
+				increase: false,
+			}
+			return { data: [...data, newEmployee] }
+		})
+	}
 
 	render() {
 		return (
@@ -148,11 +203,12 @@ export default class App extends Component {
 					<AppFilter />
 				</div>
 				<AppEmployeeList
-					data={this.data}
+					data={this.state.data}
 					onToggleIncrease={this.toggleIncrease}
 				/>
-				<AppAddNewEmployee />
+				<AppAddNewEmployee onAdd={this.addNewEmployee} />
 			</div>
 		)
 	}
 }
+
